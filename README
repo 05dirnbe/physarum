@@ -1,0 +1,7 @@
+An attempt at realizing a generic C++ implementation of the so-called "Physarum Solver".
+For details see: 
+Authors: A Tero, R. Kobayashi and T. Nakagaki
+Title:  A mathematical model for adaptive transport network in path finding by true slime mold.
+Pulbished in: Journal of Theoretical Biology 244 
+Year: 2007
+Pages: 533-564 
