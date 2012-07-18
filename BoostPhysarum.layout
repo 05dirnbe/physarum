@@ -2,39 +2,39 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
 	<File name="KurtsMain.h" open="1" top="0" tabpos="4">
-		<Cursor position="4698" topLine="84" />
+		<Cursor position="4698" topLine="70" />
 	</File>
-	<File name="KurtsPhysarum.h" open="1" top="1" tabpos="3">
-		<Cursor position="33258" topLine="934" />
+	<File name="KurtsPhysarum.h" open="1" top="0" tabpos="3">
+		<Cursor position="33258" topLine="927" />
 	</File>
 	<File name="config.h" open="1" top="0" tabpos="9">
-		<Cursor position="3445" topLine="0" />
+		<Cursor position="3445" topLine="59" />
 	</File>
 	<File name="custom_edge_properties.h" open="0" top="0" tabpos="11">
 		<Cursor position="3415" topLine="76" />
 	</File>
 	<File name="custom_graph.h" open="1" top="0" tabpos="7">
-		<Cursor position="5080" topLine="82" />
+		<Cursor position="5080" topLine="52" />
 	</File>
 	<File name="custom_randomize.h" open="1" top="0" tabpos="10">
 		<Cursor position="562" topLine="0" />
 	</File>
 	<File name="custom_vertex_properties.h" open="1" top="0" tabpos="8">
-		<Cursor position="1653" topLine="20" />
+		<Cursor position="1653" topLine="6" />
 	</File>
 	<File name="develop.h" open="1" top="0" tabpos="2">
-		<Cursor position="9466" topLine="181" />
+		<Cursor position="9466" topLine="157" />
 	</File>
-	<File name="main.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="4083" topLine="64" />
+	<File name="main.cpp" open="1" top="1" tabpos="1">
+		<Cursor position="5022" topLine="54" />
 	</File>
 	<File name="preperations.h" open="1" top="0" tabpos="5">
-		<Cursor position="4394" topLine="70" />
+		<Cursor position="4394" topLine="43" />
 	</File>
 	<File name="save" open="0" top="0" tabpos="8">
 		<Cursor position="2298" topLine="83" />
 	</File>
 	<File name="utility.h" open="1" top="0" tabpos="6">
-		<Cursor position="7321" topLine="167" />
+		<Cursor position="7321" topLine="130" />
 	</File>
 </CodeBlocks_layout_file>

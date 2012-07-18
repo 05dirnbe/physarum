@@ -130,7 +130,7 @@ int main() {
         ++it_count;
     }
 
-    //making sure the edges are set up to mirror each other
+    //checking whether the edges still mirror each other
     BOOST_ASSERT( mirror_edge_property_violated(graph, reverse_edge, capacity) == false );
     BOOST_ASSERT( mirror_edge_property_violated(graph, reverse_edge, length) == false );
     BOOST_ASSERT( mirror_edge_property_violated(graph, reverse_edge, diameter) == false );
