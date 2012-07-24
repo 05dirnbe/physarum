@@ -35,6 +35,50 @@
 
 
 /**
+* @brief Prints the quotient of two edge roperties for every edge
+*
+* Prints the value of edge property A divided by edge property B for each edge.
+* In addition, the connected vertices are listed by name.
+*
+* @tparam Graph                             A type that models boost::GraphConcept
+* @tparam AnyEdgePropertyMapA               A type that models a Readable property map
+* @tparam AnyEdgePropertyMapB               A type that models a Readable property map
+* @tparam AnyVertexNamePropertyMap          A type that models a Readable property map
+*
+* @param[in]    graph                   A graph
+* @param[in]    edge_property_A         Describes an edge property A
+* @param[in]    edge_property_B         Describes an edge property B
+* @param[in]    edge_name_property      Describes a vertex name property
+*/
+template < typename Graph, typename AnyEdgePropertyMapA, typename AnyEdgePropertyMapB, typename AnyVertexNamePropertyMap >
+inline void print_edge_property_quotient(   const Graph& graph,
+                                            const AnyEdgePropertyMapA edge_property_A,
+                                            const AnyEdgePropertyMapB edge_property_B,
+                                            const AnyVertexNamePropertyMap vertex_name_property )   {
+
+    typedef boost::graph_traits< Graph >                    Traits;
+    typedef typename Traits::edge_descriptor                edge_descriptor;
+    typedef typename Traits::vertex_descriptor              vertex_descriptor;
+    typedef typename Traits::edge_iterator                  edge_iterator;
+
+    //concept checks
+    BOOST_CONCEPT_ASSERT(( boost::GraphConcept< Graph > ));
+    BOOST_CONCEPT_ASSERT(( boost::ReadablePropertyMapConcept<AnyEdgePropertyMapA, edge_descriptor> ));
+    BOOST_CONCEPT_ASSERT(( boost::ReadablePropertyMapConcept<AnyEdgePropertyMapB, edge_descriptor> ));
+    BOOST_CONCEPT_ASSERT(( boost::ReadablePropertyMapConcept<AnyVertexNamePropertyMap, vertex_descriptor> ));
+    //Am I missing some other concept?
+
+    edge_iterator e_it, e_it_end;
+
+    for (boost::tie(e_it, e_it_end) = edges(graph); e_it != e_it_end; ++e_it)
+        std::cout   << "edge[ (" << vertex_name_property[source(*e_it, graph)] << "," << vertex_name_property[target(*e_it, graph)] << ") ] = "
+                    << edge_property_A[*e_it] / edge_property_B[*e_it] << "\n";
+
+}
+
+
+
+/**
 * @brief Print a given edge property for all edges in the graph
 *
 * In addition, the connected vertices are listed by name.
@@ -68,6 +112,9 @@ inline void print_edge_property(  const Graph& graph, const AnyEdgePropertyMap e
                     << edge_property[*e_it] << "\n";
 
 }
+
+
+
 
 
 /**

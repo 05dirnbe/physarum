@@ -85,8 +85,8 @@ int main() {
     VertexPotentialMap potential = get( potential_t(), graph);
     VertexPreviousPotentialMap previous_potential = get( previous_potential_t(), graph);
 
-    generate_rnd_graph( graph, n_vertices, n_edges, transposed, reverse_edge, rng);
-//    generate_wheatstone_graph( graph, transposed, reverse_edge);
+//    generate_rnd_graph( graph, n_vertices, n_edges, transposed, reverse_edge, rng);
+    generate_wheatstone_graph( graph, transposed, reverse_edge);
 
     std::pair< vertex_descriptor, vertex_descriptor > source_sink = make_source_sink_pair( 0, 2 );
 //    std::pair< vertex_descriptor, vertex_descriptor > source_sink = make_random_source_sink_pair( graph, rng );
@@ -135,8 +135,12 @@ int main() {
     BOOST_ASSERT( mirror_edge_property_violated(graph, reverse_edge, length) == false );
     BOOST_ASSERT( mirror_edge_property_violated(graph, reverse_edge, diameter) == false );
 
+    std::cout << "diameter:\n";
     print_edge_property( tgraph, diameter, index);
+    std::cout << "length:\n";
     print_edge_property( tgraph, length, index);
+    std::cout << "diameter/length:\n";
+    print_edge_property_quotient(tgraph, diameter, length, index);
     print_vertex_property( graph, potential, index);
     std::cout << "iteration count: " << it_count << std::endl;
 }

@@ -207,8 +207,6 @@ inline void compute_edge_flux(         const Graph& graph,
         edge_flux[*e_it] = ( edge_conductance  ) * ( vertex_potential[ source(*e_it, graph) ] - vertex_potential[ target(*e_it, graph) ]  );
         edge_diameter[*e_it] = edge_diameter[*e_it] + 0.1 * ( std::fabs(edge_flux[*e_it]) - edge_diameter[*e_it]) ;
 
-//        if ( edge_diameter[*e_it] <= 0.0000001 )
-//            edge_diameter[*e_it] = 0.0;
     }
 
 }
@@ -302,119 +300,6 @@ BigFloat calculate_maximal_potential_difference(     const Graph& graph,
 
     return max_diff;
 }
-
-/**
-* @brief Computes the potentials of every vertex
-*
-* Takes a @p graph, a source vertex @p s, a sink vertex @p t and computes and stores
-* the vertex potentials in @p vertex_potential. To this end it uses the edge lenght
-* and edge diameter given by @p edge_length and @p edge_diameter respectively to
-* solve a system of linear equations. The method in use is a variant of the Gauss-Seidel
-* algorithm. The algorithm terminates once the maximum potential difference of a vertex between
-* two iterations is below a fixed epsilon, named @p desired_precision.
-*
-*
-* @tparam Graph                 A type that models boost::GraphConcept
-* @tparam EdgeDiameterMap       A type that models a Readable property map
-* @tparam EdgeLengthMap         A type that models a Readable property map
-* @tparam VertexPotentialMap    A type that models a Read/Write property map
-*
-* @param[in]    graph                   An empty mutable graph
-* @param[in]    s                       Source
-* @param[in]    t                       Sink
-* @param[out]   vertex_potential        Describes the vertex potential property
-* @param[in]    edge_length             Describes the edge length property
-* @param[in]    edge_diameter           Describes the edge diameter property
-* @param[in]    desired_precision       Specifies the desired precision
-*
-* @todo Figure out how to put a description of the linear system in the comments.
-* @todo This gauss-seidel type of method is strange. Maybe a more robust/transparent method should replace it. Check the blas part of boost.
-* @todo Make up your mind about the stability/solvability of the linear systems produced. E.g. what about the conditioning of the resulting matric? Can it screw up?
-* @todo Question: Is vertex_potential[ source ] always the largest possible potential? If so, there should be an assertion to check for it.
-*/
-template <class Graph, class EdgeDiameterMap, class EdgeLengthMap, class VertexPotentialMap >
-void compute_vertex_potentials2(     const Graph& graph,
-                                    const typename boost::graph_traits< Graph >::vertex_descriptor s,
-                                    const typename boost::graph_traits< Graph >::vertex_descriptor t,
-                                    VertexPotentialMap vertex_potential,
-                                    const EdgeLengthMap edge_length,
-                                    const EdgeDiameterMap edge_diameter,
-                                    const BigFloat desired_precision )  {
-
-    typedef boost::graph_traits< Graph >                    Traits;
-    typedef typename Traits::vertex_descriptor              vertex_descriptor;
-    typedef typename Traits::edge_descriptor                edge_descriptor;
-    typedef typename Traits::vertex_iterator                vertex_iterator;
-    typedef typename Traits::out_edge_iterator              out_edge_iterator;
-
-    //concept checks
-    BOOST_CONCEPT_ASSERT(( boost::GraphConcept< Graph > ));
-    BOOST_CONCEPT_ASSERT(( boost::ReadWritePropertyMapConcept< VertexPotentialMap, vertex_descriptor > ));
-    BOOST_CONCEPT_ASSERT(( boost::ReadablePropertyMapConcept< EdgeLengthMap, edge_descriptor > ));
-    BOOST_CONCEPT_ASSERT(( boost::ReadablePropertyMapConcept< EdgeDiameterMap, edge_descriptor > ));
-    //Am I missing some other concept?
-
-
-
-    BigFloat max_diff;
-
-    do {
-
-        max_diff = 0.0;
-        vertex_iterator v_it, v_it_end;
-
-        for ( boost::tie(v_it, v_it_end) = vertices(graph); v_it != v_it_end; ++v_it) {
-
-                    if ( *v_it == t )
-                        continue;
-
-                    BigFloat R = 0.0;
-                    BigFloat S = 0.0;
-                    out_edge_iterator oe_it, oe_it_end;
-
-                    for ( boost::tie(oe_it, oe_it_end) = out_edges(*v_it, graph); oe_it != oe_it_end; ++oe_it) {
-
-                           vertex_descriptor adjacent = target(*oe_it, graph);
-                           BigFloat edge_resistance = edge_length[*oe_it] / edge_diameter[*oe_it];
-
-                            if (edge_resistance < desired_precision)
-                                continue;
-
-                           R += edge_resistance * vertex_potential[adjacent];
-                           S += edge_resistance;
-                    }
-
-
-                    if (*v_it == s)
-                        R += source_strength;
-
-
-
-                    if ( S < 0.00001 ) {
-                        continue;
-
-                    } else {
-
-                        BigFloat previous_v_potential = vertex_potential[*v_it];
-                        vertex_potential[*v_it] = R/S;
-
-                        BigFloat current_diff = std::fabs(vertex_potential[*v_it] - previous_v_potential);
-
-                        if ( current_diff > max_diff )
-                            max_diff = current_diff;
-                    }
-        }
-
-//            std::cout << max_diff << " < " << desired_precision << "\n";
-
-    } while ( max_diff > desired_precision );
-
-    //postcondition
-    BOOST_ASSERT( vertex_potential( t ) == 0.0 );
-    // is vertex_potential( source ) the largest possible potential? If so, there should be an assertion to check for it
-
-}
-
 
 /** @} */
 
